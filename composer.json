@@ -1,0 +1,10 @@
+{
+  "name": "abc/notestorage",
+  "require-dev": {
+    "phalcon/ide-stubs": "^3.4"
+  },
+  "require": {
+    "php": "^7.3",
+    "ext-phalcon": "^3.4"
+  }
+}

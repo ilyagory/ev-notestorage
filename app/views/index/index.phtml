@@ -1,0 +1,112 @@
+<?php
+/**
+ * @var string $action
+ * @var string $tokenKey
+ * @var string $tokenValue
+ * @var int $maxPwdLength
+ * @var int $minPwdLength
+ * @var int $maxReadlimit
+ * @var DateTime $maxTill
+ * @var DateTime $minTill
+ * @var Arr $validation
+ * @var View $this
+ * @var Note $note
+ */
+
+use App\Util\Arr;
+use Phalcon\Mvc\View;
+
+$dtFmt = 'Y-m-d\TH:i:s'
+?>
+<h2 class="h4 mt-3 mb-3">
+    <i class="bi-stickies-fill"></i>
+    Create new note
+</h2>
+
+<div class="card card-body border-0 shadow">
+    <form method="post" action="<?= $action ?>">
+        <div class="mb-3">
+            <input type="hidden" name="<?= $tokenKey ?>" value="<?= $tokenValue ?>">
+            <textarea name="txt" rows="10"
+                      class="form-control <?= $validation['txt'] ? 'is-invalid' : '' ?>"
+                      placeholder="Enter your memo here…"><?= $note->txt ?></textarea>
+            <div class="invalid-feedback">
+                <i class="bi-exclamation-circle"></i>
+                <?= $validation['txt'] ?>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <label for="setPassword">Password</label>
+                <input type="password" name="pwd" class="form-control <?= $validation['pwd'] ? 'is-invalid' : '' ?>"
+                       id="setPassword" max="<?= $maxPwdLength ?>"
+                       maxlength="<?= $maxPwdLength ?>" min="<?= $minPwdLength ?>">
+                <div class="invalid-feedback">
+                    <i class="bi-exclamation-circle"></i>
+                    <?= $validation['pwd'] ?>
+                </div>
+                <div class="small text-muted">
+                    <i class="bi-info-circle"></i>
+                    <span>Minimum length: <?= $minPwdLength ?>. Maximum length: <?= $maxPwdLength ?></span>
+                </div>
+            </div>
+            <div class="col">
+                <label for="setPassword">Confirm password</label>
+                <input type="password" name="pwdConfirm"
+                       class="form-control <?= $validation['pwdConfirm'] ? 'is-invalid' : '' ?>"
+                       id="setPasswordConfirm" max="<?= $maxPwdLength ?>"
+                       maxlength="<?= $maxPwdLength ?>" min="<?= $minPwdLength ?>">
+                <div class="invalid-feedback">
+                    <i class="bi-exclamation-circle"></i>
+                    <?= $validation['pwdConfirm'] ?>
+                </div>
+            </div>
+            <div class="col">
+                <label for="setTill">Till date</label>
+                <div class="input-group" id="till-date-ig">
+                    <div class="input-group-text">
+                        <i class="bi-calendar"></i>
+                    </div>
+                    <input type="text" name="till" id="setTill"
+                           class="form-control <?= $validation['till'] ? 'is-invalid' : '' ?>"
+                           max="<?= $maxTill->format($dtFmt) ?>"
+                           min="<?= $minTill->format($dtFmt) ?>"
+                           value="<?= empty($note->readlimit) ? $maxTill->format($dtFmt) : $note->till->format($dtFmt) ?>">
+                    <div class="invalid-feedback">
+                        <i class="bi-exclamation-circle"></i>
+                        <?= $validation['till'] ?>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col">
+                <label for="setReadlimit">Read limit</label>
+                <input type="number" name="readlimit" step="1" min="0" max="<?= $maxReadlimit ?>"
+                       class="form-control <?= $validation['readlimit'] ? 'is-invalid' : '' ?>"
+                       id="setReadlimit" value="<?= $note->readlimit ?>">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-lg btn-primary">
+            <i class="bi-check-lg"></i>
+            Do save
+        </button>
+    </form>
+</div>
+<script src="/assets/vendor/flatpickr.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        flatpickr('#setTill', {
+            maxDate: '<?= $maxTill->format($dtFmt)?>',
+            minDate: '<?= $minTill->format($dtFmt)?>',
+            enableTime: true,
+            time_24hr: true,
+            /**
+             * @param {Date} dt
+             */
+            formatDate(dt) {
+                return dt.toLocaleDateString() + ' ' + dt.toLocaleTimeString()
+            }
+        })
+    })
+</script>

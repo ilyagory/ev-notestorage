@@ -1,0 +1,47 @@
+<?php
+/**
+ * @var string $action
+ * @var string $tokenKey
+ * @var string $tokenValue
+ * @var int $maxPwdLength
+ * @var int $minPwdLength
+ * @var Arr $validation
+ */
+
+use App\Util\Arr;
+
+?>
+<h2 class="h4 mt-3 mb-3">
+    <i class="bi-file-earmark-lock"></i>
+    <span class="text-danger">Encrypted</span>
+    note
+</h2>
+
+<div class="card card-body border-0 shadow">
+    <form method="post" action="<?= $action ?>">
+        <input type="hidden" name="<?= $tokenKey ?>" value="<?= $tokenValue ?>">
+
+        <div class="row mb-3">
+            <div class="col">
+                <p class="h6 alert alert-indigo text-center mb-3">
+                    <i class="bi-lock-fill"></i>
+                    Note was encrypted with password.<br> Please enter the password to decrypt.
+                </p>
+            </div>
+            <div class="col">
+                <label for="setPassword">Password</label>
+                <input type="password" name="pwd" class="form-control <?= $validation['pwd'] ? 'is-invalid' : '' ?>"
+                       id="setPassword" max="<?= $maxPwdLength ?>"
+                       maxlength="<?= $maxPwdLength ?>" min="<?= $minPwdLength ?>" minlength="<?= $minPwdLength ?>">
+                <div class="invalid-feedback">
+                    <i class="bi-exclamation-circle"></i>
+                    <?= $validation['pwd'] ?>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-lg btn-primary">
+            <i class="bi-check-lg"></i>Decrypt
+        </button>
+    </form>
+</div>

@@ -1,0 +1,56 @@
+<?php
+/**
+ * @var string $link
+ */
+?>
+<h2 class="h4 mt-3 mb-3">
+    <i class="bi-share"></i>
+    Get the link
+</h2>
+
+<div class="card card-body border-0 shadow">
+
+    <div class="alert alert-info">
+        <i class="bi-info-circle"></i>
+        The note was created. Use the link below to get access to the Note.
+    </div>
+
+    <div class="input-group">
+        <div class="input-group-text">
+            <a href="<?= $link ?>" target="_blank" title="Open in new tab">
+                <i class="font-medium bi-file-earmark"></i>
+            </a>
+        </div>
+        <textarea style="resize: none;" rows="1" id="setLink"
+                  class="form-control link-holder"
+                  readonly><?= $link ?></textarea>
+        <div class="input-group-text py-0">
+            <button type="button" class="btn btn-secondary link-copier btn-sm"
+                    title="Copy to clipboard" data-tgt="setLink">
+                <i class="bi-clipboard"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cpbtns = document.querySelectorAll('.link-copier')
+        for (const cpbtn of cpbtns) {
+            cpbtn.addEventListener('click', async function (evt) {
+                const txtel = document.querySelector(`#${evt.currentTarget.dataset['tgt']}`)
+                if (navigator.clipboard) {
+                    await navigator.clipboard.writeText(txtel.value.trim())
+                    return
+                }
+
+                txtel.focus()
+                txtel.select()
+                try {
+                    document.execCommand('copy')
+                } catch (e) {
+                }
+                txtel.blur()
+            })
+        }
+    })
+</script>
